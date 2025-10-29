@@ -1,0 +1,6 @@
+.env
+news_up.py
+news_bot.py
+memory.db
+sq.py
+venv/
