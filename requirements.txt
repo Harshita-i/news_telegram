@@ -5,5 +5,3 @@ google-generativeai
 sentence-transformers
 scikit-learn
 numpy
-gradio
-sqlite3
