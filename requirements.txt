@@ -5,3 +5,4 @@ google-generativeai
 sentence-transformers
 scikit-learn
 numpy
+Flask
