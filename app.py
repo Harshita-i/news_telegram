@@ -10,6 +10,8 @@ import sqlite3
 import re
 from flask import Flask
 
+DB_PATH = os.path.join(os.path.dirname(__file__), "memory.db")
+
 # --- ENVIRONMENT AND KEYS ---
 load_dotenv()
 GNEWS_API_KEY = os.getenv("GNEWS_API_KEY")
@@ -51,7 +53,8 @@ def init_alerts_db():
 
 
 async def notify_alerts(context, news_data):
-    conn = sqlite3.connect("memory.db")
+    # conn = sqlite3.connect("memory.db")
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("SELECT DISTINCT chat_id, keyword FROM alerts")
     rows = c.fetchall()
@@ -72,7 +75,8 @@ async def notify_alerts(context, news_data):
 
 def log_interaction(chat_id, input_topic, news_data, summary):
     print("Logging chat_id:", chat_id)
-    conn = sqlite3.connect("memory.db")
+    # conn = sqlite3.connect("memory.db")
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute(
         "INSERT INTO interactions (chat_id, input_topic, news_data, summary) VALUES (?, ?, ?, ?)",
@@ -80,6 +84,7 @@ def log_interaction(chat_id, input_topic, news_data, summary):
     )
     conn.commit()
     conn.close()
+    print("✅ Interaction logged successfully")
 
 # Initialize database
 init_db()
