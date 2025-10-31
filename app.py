@@ -7,7 +7,6 @@ from telegram.helpers import escape_markdown
 from dotenv import load_dotenv
 import threading
 import sqlite3
-import gradio as gr
 import re
 # --- ENVIRONMENT AND KEYS ---
 load_dotenv()
@@ -46,41 +45,6 @@ def init_alerts_db():
     """)
     conn.commit()
     conn.close()
-
-
-
-# # Simple Gradio demo for Space viewers
-# def gradio_news(topic):
-#     # You can reuse your get_news and summarize_with_ai (may need to adapt to sync if they're async)
-#     import asyncio
-#     loop = asyncio.new_event_loop()
-#     news_data = loop.run_until_complete(get_news(topic))
-#     summary = loop.run_until_complete(summarize_with_ai(news_data))
-#     return summary
-
-# demo = gr.Interface(
-#     fn=gradio_news,
-#     inputs="text",
-#     outputs="text",
-#     title="Telegram News Bot Demo",
-#     description="Type a news topic (e.g. 'AI', 'World', 'Business') and get a summarized digest just like in Telegram!"
-# )
-
-
-# async def notify_alerts(context, news_data):
-#     conn = sqlite3.connect("memory.db")
-#     c = conn.cursor()
-#     c.execute("SELECT DISTINCT chat_id, keyword FROM alerts")
-#     rows = c.fetchall()
-#     conn.close()
-#     already_notified = set()
-#     for chat_id, keyword in rows:
-#         if keyword.lower() in news_data.lower() and chat_id not in already_notified:
-#             await context.bot.send_message(
-#                 chat_id=int(chat_id),
-#                 text=f"🔔 ALERT: The keyword '{keyword}' appears in the latest news!"
-#             )
-#             already_notified.add(chat_id)
 
 
 
@@ -404,31 +368,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-# import asyncio
-
-# def run_gradio():
-#     demo.launch(server_name="0.0.0.0", server_port=7860)
-
-# async def run_bot_async():
-#     app = ApplicationBuilder().token(BOT_TOKEN).build()
-#     app.add_handler(CommandHandler("news", news_command))
-#     app.add_handler(CommandHandler("history", history_command))
-#     app.add_handler(CommandHandler("mytopics", mytopics_command))
-#     app.add_handler(CommandHandler("alert", alert_command))
-#     app.add_handler(CommandHandler("alerts", alerts_command))
-#     app.add_handler(CommandHandler("removealert", removealert_command))
-#     app.add_handler(CommandHandler("trending", trending_command))
-#     print("\n" + "="*50)
-#     print("Bot is initialized and ready to poll!")
-#     print("="*50 + "\n")
-#     await app.run_polling()
-
-# def main():
-#     # Start the bot as an asyncio task in a thread
-#     bot_thread = threading.Thread(target=lambda: asyncio.run(run_bot_async()), daemon=True)
-#     bot_thread.start()
-#     # Start Gradio demo (in main thread)
-#     run_gradio()
-
-# if __name__ == "__main__":
-#     main()
