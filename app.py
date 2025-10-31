@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 import threading
 import sqlite3
 import re
+from flask import Flask
+
 # --- ENVIRONMENT AND KEYS ---
 load_dotenv()
 GNEWS_API_KEY = os.getenv("GNEWS_API_KEY")
@@ -341,6 +343,21 @@ async def trending_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 
+
+
+
+# Create a dummy Flask app
+flask_app = Flask(__name__)
+
+@flask_app.route("/")
+def home():
+    return "✅ Telegram Bot is running!"
+
+def run_flask():
+    port = int(os.environ.get("PORT", 5000))
+    flask_app.run(host="0.0.0.0", port=port)
+
+
 # --- MAIN ---
 def main():
     if not BOT_TOKEN:
@@ -366,5 +383,6 @@ def main():
 
 
 if __name__ == '__main__':
+    threading.Thread(target=run_flask).start()
     main()
 
